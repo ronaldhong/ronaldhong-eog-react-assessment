@@ -17,6 +17,7 @@
     "rebound": "^0.1.0",
     "redux": "^4.0.1",
     "redux-saga": "^1.0.3",
+    "semantic-ui-react": "^0.87.2",
     "urql": "^1.1.1"
   },
   "scripts": {
