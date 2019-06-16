@@ -4,11 +4,13 @@ import createSagaMiddleware from "redux-saga";
 import sagas from "./sagas";
 import weatherReducer from "./reducers/Weather";
 import metricReducer from "./reducers/Metric";
+import metricsMeasurementsReducer from "./reducers/MetricsMeasurements";
 
 export default () => {
   const rootReducer = combineReducers({
     weather: weatherReducer,
-    metric: metricReducer
+    metric: metricReducer,
+    metricsMeasurements: metricsMeasurementsReducer
   });
 
   const composeEnhancers = composeWithDevTools({});

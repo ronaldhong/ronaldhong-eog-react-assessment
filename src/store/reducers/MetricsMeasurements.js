@@ -1,17 +1,17 @@
 import * as actions from "../actions";
 
 const initialState = {
-    getMetrics: []
+    getMultipleMeasurements:[]
   };
 
-const metricsDataReceived =(state,action) =>{
-    const {getMetrics} = action;
-    return {getMetrics}
+const metricsMeasurementsDataReceived =(state, action) =>{
+    const {getMultipleMeasurements} = action;
+    return {getMultipleMeasurements}
 
 }
 
 const handlers = {
-    [actions.METRICS_DATA_RECEIVED]: metricsDataReceived
+    [actions.METRICS_MEASUREMENTS_RECEIVED]: metricsMeasurementsDataReceived
 }
 
 export default (state = initialState, action)=>{
