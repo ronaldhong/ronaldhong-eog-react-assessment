@@ -39,16 +39,7 @@ export default props => {
 };
 
 const Chart = props => {
-  console.log(props)
-
-
-  // const [dataSelected, setGreeting] = useState(props);
-
-  // useEffect(() => {
-  //   if (dataSelected !== props) {
-  //     setGreeting(props);
-  //   }
-  // }, [dataSelected,setGreeting, props]);
+  // console.log(props)
 
   // const input = [
   //   {metricName: "tubingPressure", after: 1560604691151, before:156060470000},
@@ -81,8 +72,8 @@ const Chart = props => {
         }}
       >
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="name" />
-        <YAxis />
+        <XAxis dataKey="name" allowDataOverflow={true} />
+        <YAxis domain={['auto', 'auto']} scale="linear" padding={{ top: 10, bottom: 10 }}/>
         <Tooltip />
         <Legend />
         <Line

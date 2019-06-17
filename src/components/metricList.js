@@ -6,13 +6,21 @@ import CircularProgress from "@material-ui/core/LinearProgress";
 import { Dropdown } from "semantic-ui-react";
 import Charts from "./Charts";
 
+const current_time = new Date().valueOf()
 const query_metric = `
     query {
         getMetrics
     }`;
 
 const query_multiple_measurements = `
-    query($input: [MeasurementQuery] = [{metricName: "tubingPressure", after: 1560712691613, before: 1560712711613},{metricName: "casingPressure", after: 1560712691613, before: 1560712711613}]
+    query($input: [MeasurementQuery] = [
+      {metricName: "tubingPressure", after: ${current_time - 10000}, before: ${current_time}},
+      {metricName: "casingPressure", after: ${current_time - 10000}, before: ${current_time}},
+      {metricName: "oilTemp", after: ${current_time - 10000}, before: ${current_time}},
+      {metricName: "flareTemp", after: ${current_time - 10000}, before: ${current_time}},
+      {metricName: "waterTemp", after: ${current_time - 10000}, before: ${current_time}},
+      {metricName: "injValveOpen", after: ${current_time - 10000}, before: ${current_time}}
+    ]
     ){
       getMultipleMeasurements(input: $input) {
         metric
@@ -45,6 +53,11 @@ const getMultipleMeasurement = state => {
     state.metricsMeasurements.getMultipleMeasurements;
   return getMultipleMeasurements;
 };
+
+const getNewMeasurementData = state =>{
+  const getNewMeasurementDatas = state.metricsMeasurements.getMultipleMeasurements;
+  return getNewMeasurementDatas
+}
 
 export default () => {
   return <MetricList />;
@@ -89,14 +102,10 @@ const CheckMetricHasData = e => {
   return query_data;
 };
 
-// {metricName: "tubingPressure", after: 1560712411613, before: 1560712711613}
-// {metricName: "casingPressure", after: 1560712411613, before: 1560712711613}
-
-const FetchMultipleMeasurements = e => {
-  let query = query_multiple_measurements;
+const FetchMultipleMeasurements = () => {
   const dispatch = useDispatch();
   let [result] = useQuery({
-    query,
+    query: query_multiple_measurements,
     variable: []
   });
   const { data, error } = result;
@@ -107,7 +116,6 @@ const FetchMultipleMeasurements = e => {
     if (!data) {
       return;
     }
-    console.log("TESTSAFSTAWTATA")
     const getMultipleMeasurements = data;
     dispatch({
       type: actions.METRICS_MEASUREMENTS_RECEIVED,
@@ -116,24 +124,44 @@ const FetchMultipleMeasurements = e => {
   }, [dispatch, data, error]);
 };
 
-const MetricList = () => {
-  FetchMetricList();
-  const { getMetrics } = useSelector(getMetric);
-  FetchMultipleMeasurements(getMetrics);
-  const { getMultipleMeasurements } = useSelector(getMultipleMeasurement);
-  const [metricSearched, setGreeting] = useState([]);
-  // const [result] = useSubscription({
-  //   query: metric_Subscription_Query,
-  //   variables: {}
-  // });
-  if (!getMetrics) return <CircularProgress />;
-  let options = [];
-  getMetrics.forEach(value => {
-    let obj = { key: value, text: value, value: value };
-    options.push(obj);
-  });
+const FetchNewMeasurementData = ()=>{  ///FetchNewMeasurementData has real time data, dispatch an action and will update the total measurement data
+  const dispatch = useDispatch();
+  const [result] = useSubscription({
+    query: metric_Subscription_Query,
+    variables: {}
+  }); 
+  const {data, error} = result;
+  useEffect(()=>{
+    if (error){
+      return;
+    }
+    if (!data){
+      return;
+    }
+    const newMeasurementData = data;
+    dispatch({
+      type: actions.NEW_MEASUREMENTS_RECEIVED,
+      newMeasurementData
+    })
+  }, [data, error, dispatch])
+}
 
-  const handleChange = (event, { value }) => {
+const MetricList = () => {
+  FetchMetricList(); ///get the list of metrics for dropdown
+  const { getMetrics } = useSelector(getMetric);
+  FetchMultipleMeasurements();
+  FetchNewMeasurementData(); 
+  const [metricsSelected, setGreeting] = useState([]);
+  const {getMultipleMeasurements} = useSelector(getMultipleMeasurement)
+  if (!getMetrics) return <CircularProgress />;
+
+  let options = [];
+    getMetrics.forEach(value => {
+      let obj = { key: value, text: value, value: value };
+      options.push(obj);
+    });
+
+  const handleSelectionChange = (event, { value }) => {
     setGreeting({ value });
   };
 
@@ -146,11 +174,10 @@ const MetricList = () => {
         selection
         options={options}
         style={{ width: "500px" }}
-        onChange={handleChange}
+        onChange={handleSelectionChange}
       />
       <Charts
-        dataSelected={metricSearched}
-        displayMultipleMeasurements={getMultipleMeasurements}
+        dataSelected={metricsSelected}
       />
     </div>
   );
