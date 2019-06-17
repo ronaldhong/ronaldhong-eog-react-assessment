@@ -1,4 +1,4 @@
-import React, {useState, useEffect } from "react";
+import React from "react";
 import {
   LineChart,
   Line,
@@ -12,19 +12,19 @@ import {
 
 const data = [
   {
-    name: 1560604692246,
+    name: new Date(1560604692246).toLocaleTimeString(),
     tubingPressure: 607.74,
     casingPressure: 463.66,
     oilTemp:  204.27
   },
   {
-    name: 1560604693546,
+    name: new Date(1560604693546).toLocaleTimeString(),
     tubingPressure: 619.09,
     casingPressure: 465.83,
     oilTemp: 194.91
   },
   {
-    name: 1560604694847,
+    name: new Date(1560604694847).toLocaleTimeString(),
     tubingPressure: 589.66,
     casingPressure: 473.19,
     oilTemp: 204.36
@@ -39,31 +39,28 @@ export default props => {
 };
 
 const Chart = props => {
+  console.log(props)
 
-  const [dataSelected, setGreeting] = useState(props);
 
-  useEffect(() => {
-    if (dataSelected !== props) {
-      setGreeting(props);
-    }
-  }, [props]);
+  // const [dataSelected, setGreeting] = useState(props);
 
-  const input = [
-    {metricName: "tubingPressure", after: 1560604691151, before:156060470000},
-    {metricName: "casingPressure", after: 1560604691151, before:156060470000},
-    {metricName: "oilTemp", after: 1560604691151, before:156060470000},
-    {metricName: "flareTemp", after: 1560604691151, before:156060470000},
-    {metricName: "waterTemp", after: 1560604691151, before:156060470000},
-    {metricName: "injValveOpen", after: 1560604691151, before:156060470000}
-    ]
+  // useEffect(() => {
+  //   if (dataSelected !== props) {
+  //     setGreeting(props);
+  //   }
+  // }, [dataSelected,setGreeting, props]);
+
+  // const input = [
+  //   {metricName: "tubingPressure", after: 1560604691151, before:156060470000},
+  //   {metricName: "casingPressure", after: 1560604691151, before:156060470000},
+  //   {metricName: "oilTemp", after: 1560604691151, before:156060470000},
+  //   {metricName: "flareTemp", after: 1560604691151, before:156060470000},
+  //   {metricName: "waterTemp", after: 1560604691151, before:156060470000},
+  //   {metricName: "injValveOpen", after: 1560604691151, before:156060470000}
+  //   ]
   
     
-  // const [result] = useQuery({
-  //   query,
-  //   variables: {input}
-  // });
-  // if (result.data !== undefined){
-  //   // console.log(result.data)
+
   //   for (let index = 0; index < result.data.getMultipleMeasurements.length; index++) {
   //     console.log(result.data.getMultipleMeasurements[index])
   //   }
@@ -72,7 +69,6 @@ const Chart = props => {
   
   return (
     <div>
-      <button />
       <LineChart
         width={500}
         height={300}

@@ -5,6 +5,7 @@ const initialState = {
   };
 
 const metricsMeasurementsDataReceived =(state, action) =>{
+    console.log("AGAIN?")
     const {getMultipleMeasurements} = action;
     return {getMultipleMeasurements}
 

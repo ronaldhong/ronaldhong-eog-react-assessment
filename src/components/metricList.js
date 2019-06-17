@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useQuery } from "urql";
+import { useQuery, useSubscription } from "urql";
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../store/actions";
 import CircularProgress from "@material-ui/core/LinearProgress";
 import { Dropdown } from "semantic-ui-react";
 import Charts from "./Charts";
-// import Grid from "@material-ui/core/Grid";
 
 const query_metric = `
     query {
@@ -13,8 +12,7 @@ const query_metric = `
     }`;
 
 const query_multiple_measurements = `
-    query(
-      $input: [MeasurementQuery] = [{metricName: "oilTemp", after: 1560702120000, before:1560702139383}]
+    query($input: [MeasurementQuery] = [{metricName: "tubingPressure", after: 1560712691613, before: 1560712711613},{metricName: "casingPressure", after: 1560712691613, before: 1560712711613}]
     ){
       getMultipleMeasurements(input: $input) {
         metric
@@ -26,16 +24,27 @@ const query_multiple_measurements = `
         }
       }
     }`;
+const metric_Subscription_Query = `
+  subscription {
+    newMeasurement{
+      metric
+      at
+      value
+      unit
+    }
+  }
+`;
 
 const getMetric = state => {
   const getMetrics = state.metric.getMetrics;
   return getMetrics;
 };
 
-const getMultipleMeasurement = state =>{
-  const getMultipleMeasurements = state.metricsMeasurements.getMultipleMeasurements;
+const getMultipleMeasurement = state => {
+  const getMultipleMeasurements =
+    state.metricsMeasurements.getMultipleMeasurements;
   return getMultipleMeasurements;
-}
+};
 
 export default () => {
   return <MetricList />;
@@ -44,12 +53,11 @@ export default () => {
 const FetchMetricList = () => {
   let query = query_metric;
   const dispatch = useDispatch();
-  const { getMetrics } = useSelector(getMetric);
   let [result] = useQuery({
     query,
     variables: {}
   });
-  const { data, error } = result;
+  const { fetching, data, error } = result;
 
   useEffect(() => {
     if (error) {
@@ -58,39 +66,69 @@ const FetchMetricList = () => {
     if (!data) {
       return;
     }
+    if (fetching) {
+      return;
+    }
     const getMetrics = data;
     dispatch({ type: actions.METRICS_DATA_RECEIVED, getMetrics });
-  }, [dispatch, data, error]);
-
-  return getMetrics;
+  }, [dispatch, data, error, fetching]);
 };
 
-const FetchMultipleMeasurements = (e) => { 
+const CheckMetricHasData = e => {
+  let query_data = [];
+  let time_current = new Date().getTime();
+  let time_before = time_current - 5 * 60 * 1000;
+  if (!e) return;
+  for (let index = 0; index < e.length; index++) {
+    query_data.push({
+      metricName: e[index],
+      after: time_before,
+      before: time_current
+    });
+  }
+  return query_data;
+};
+
+// {metricName: "tubingPressure", after: 1560712411613, before: 1560712711613}
+// {metricName: "casingPressure", after: 1560712411613, before: 1560712711613}
+
+const FetchMultipleMeasurements = e => {
   let query = query_multiple_measurements;
   const dispatch = useDispatch();
-  const {getMultipleMeasurements} = useSelector(getMultipleMeasurement);
   let [result] = useQuery({
     query,
-    variables: {}
+    variable: []
   });
-  const {data, error} = result;
-  useEffect(()=>{
-    if (error){return;}
-    if (!data){return;}
+  const { data, error } = result;
+  useEffect(() => {
+    if (error) {
+      return;
+    }
+    if (!data) {
+      return;
+    }
+    console.log("TESTSAFSTAWTATA")
     const getMultipleMeasurements = data;
-    dispatch({type: actions.METRICS_MEASUREMENTS_RECEIVED, getMultipleMeasurements});
-  },[dispatch, data, error]);
-
-  return getMultipleMeasurements
+    dispatch({
+      type: actions.METRICS_MEASUREMENTS_RECEIVED,
+      getMultipleMeasurements
+    });
+  }, [dispatch, data, error]);
 };
 
 const MetricList = () => {
-  let getMetricsList = FetchMetricList();
-  let getMetrics_measurement = FetchMultipleMeasurements(getMetricsList);
+  FetchMetricList();
+  const { getMetrics } = useSelector(getMetric);
+  FetchMultipleMeasurements(getMetrics);
+  const { getMultipleMeasurements } = useSelector(getMultipleMeasurement);
   const [metricSearched, setGreeting] = useState([]);
-  if (!getMetricsList) return <CircularProgress />;
+  // const [result] = useSubscription({
+  //   query: metric_Subscription_Query,
+  //   variables: {}
+  // });
+  if (!getMetrics) return <CircularProgress />;
   let options = [];
-  getMetricsList.forEach(value => {
+  getMetrics.forEach(value => {
     let obj = { key: value, text: value, value: value };
     options.push(obj);
   });
@@ -110,7 +148,10 @@ const MetricList = () => {
         style={{ width: "500px" }}
         onChange={handleChange}
       />
-      <Charts dataSelected={metricSearched} />
+      <Charts
+        dataSelected={metricSearched}
+        displayMultipleMeasurements={getMultipleMeasurements}
+      />
     </div>
   );
 };
