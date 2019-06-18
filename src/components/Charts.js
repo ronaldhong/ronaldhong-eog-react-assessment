@@ -10,8 +10,6 @@ import {
   Legend,
   ResponsiveContainer
 } from "recharts";
-import { Dropdown } from "semantic-ui-react";
-import CircularProgress from "@material-ui/core/LinearProgress";
 var moment = require("moment");
 
 function formatXAxis(tickItem) {
@@ -71,43 +69,22 @@ const turnMeasurementDataToChartFormat=(data_list, getMultipleMeasurements)=>{
   return data_list;
 };
 
-const turnMetricListToDropDownFormat=(options, getMetrics)=>{
-  getMetrics.getMetrics.forEach(value => {
-    let obj = { key: value, text: value, value: value };
-    options.push(obj);
-  });
-  return options;
-}
 
-const Chart = () => {
+const Chart = (props) => {
+  console.log(props)
   const getMultipleMeasurements = useSelector(getMultipleMeasurement);
-  const getMetrics = useSelector(getMetric);
+  // const getMetrics = useSelector(getMetric);
+  // const [dataSelected, setSelection] = useState([]);
   let data_list = [];
-  if (getMetrics.length === 0) return <CircularProgress />;
   if (getMultipleMeasurements.length !== 0) {
     data_list = turnMeasurementDataToChartFormat(data_list, getMultipleMeasurements)
   };
-
-  let options = [];
-  options = turnMetricListToDropDownFormat(options, getMetrics);
-  
-
-  // const handleSelectionChange = (event, { value }) => {
-  //   setGreeting([value]);
-  // };
-  const handleSelectionChange = () => {};
+  if (props.props.command.value.length ===0){
+    return (<div></div>)
+  };
 
   return (
     <div>
-      <Dropdown
-        placeholder="Select..."
-        fluid
-        multiple
-        selection
-        options={options}
-        style={{ width: "500px" }}
-        onChange={handleSelectionChange}
-      />
       <ResponsiveContainer width="95%" height={400}>
         <LineChart
           width={500}
@@ -131,74 +108,25 @@ const Chart = () => {
             scale="linear"
             padding={{ top: 10, bottom: 10 }}
           />
-          <Tooltip labelFormatter={t => moment(parseInt(t)).format("lll")} />
+          <Tooltip labelFormatter={t => moment(parseInt(t)).format("lll")} useTranslate3d={false} />
           <Legend />
 
-          {/* {props.props.dataSelected[0]
-          ? props.props.dataSelected[0].map(a => {
+          {props.props.command.value
+          ? props.props.command.value.map(a => {
               return (
                 <Line
                   type="monotone"
                   key={`${a}`}
                   dataKey={`${a}`}
-                  strokeOpacity=".5"
-                  stroke="#8884d8"
+                  strokeOpacity="1"
+                  stroke= 'black'
                   activeDot={{ r: 8 }}
                   isAnimationActive={false}
+                  dot={false}
                 />
               );
-            }) */}
-          {/* : null} */}
-
-          <Line
-            type="monotone"
-            dataKey="tubingPressure"
-            strokeOpacity=".5"
-            stroke="#8884d8"
-            activeDot={{ r: 8 }}
-            hide={false}
-            dot={false}
-          />
-          <Line
-            type="monotone"
-            dataKey="casingPressure"
-            strokeOpacity=".5"
-            stroke="#8884d8"
-            activeDot={{ r: 8 }}
-            dot={false}
-          />
-          <Line
-            type="monotone"
-            dataKey="oilTemp"
-            strokeOpacity=".5"
-            stroke="#8884d8"
-            activeDot={{ r: 8 }}
-            dot={false}
-          />
-          <Line
-            type="monotone"
-            dataKey="waterTemp"
-            strokeOpacity=".5"
-            stroke="#8884d8"
-            activeDot={{ r: 8 }}
-            dot={false}
-          />
-          <Line
-            type="monotone"
-            dataKey="flareTemp"
-            strokeOpacity=".5"
-            stroke="#8884d8"
-            activeDot={{ r: 8 }}
-            dot={false}
-          />
-          <Line
-            type="monotone"
-            dataKey="injValveOpen"
-            strokeOpacity=".5"
-            stroke="#8884d8"
-            activeDot={{ r: 8 }}
-            dot={false}
-          />
+            })
+          : null}
         </LineChart>
       </ResponsiveContainer>
     </div>
