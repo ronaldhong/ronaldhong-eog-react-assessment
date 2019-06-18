@@ -27,7 +27,7 @@ const getMultipleMeasurement = state => {
   return getMultipleMeasurements;
 };
 
-const turnMeasurementDataToChartFormat = (
+const measurementDataToChartFormat = (
   data_list,
   getMultipleMeasurements
 ) => {
@@ -49,16 +49,16 @@ const turnMeasurementDataToChartFormat = (
 
   const groupByTime = groupBy('at');
 
-  let v = groupByTime(list);
+  let sorted_data_list = groupByTime(list)
   let list_of_time = [];
-  list_of_time.push(Object.keys(v));
+  list_of_time.push(Object.keys(sorted_data_list));
   list_of_time = list_of_time[0];
 
   for (let index = 0; index < list_of_time.length; index++) {
     let obj = {};
     obj['name'] = list_of_time[index];
-    for (let k = 0; k < v[list_of_time[index]].length; k++) {
-      obj[v[list_of_time[index]][k].metric] = v[list_of_time[index]][k].value;
+    for (let k = 0; k < sorted_data_list[list_of_time[index]].length; k++) {
+      obj[sorted_data_list[list_of_time[index]][k].metric] = sorted_data_list[list_of_time[index]][k].value;
     }
     data_list.push(obj);
   }
@@ -67,11 +67,9 @@ const turnMeasurementDataToChartFormat = (
 
 const Chart = props => {
   const getMultipleMeasurements = useSelector(getMultipleMeasurement);
-  // const getMetrics = useSelector(getMetric);
-  // const [dataSelected, setSelection] = useState([]);
   let data_list = [];
   if (getMultipleMeasurements.length !== 0) {
-    data_list = turnMeasurementDataToChartFormat(
+    data_list = measurementDataToChartFormat(
       data_list,
       getMultipleMeasurements
     );

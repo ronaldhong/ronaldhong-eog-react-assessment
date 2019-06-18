@@ -111,7 +111,7 @@ const FetchMultipleMeasurements = () => {
   }, [dispatch, data, error, fetching]);
 };
 
-const turnMetricListToDropDownFormat = (options, getMetrics) => {
+const metricListToDropDownFormat = (options, getMetrics) => {
   getMetrics.getMetrics.forEach(value => {
     let obj = { key: value, text: value, value: value };
     options.push(obj);
@@ -158,12 +158,12 @@ const MetricList = () => {
         <Loader size="massive">Loading</Loader>
       </Dimmer>
     );
-  options = turnMetricListToDropDownFormat(options, getMetrics);
+  options = metricListToDropDownFormat(options, getMetrics);
 
   const handleSelectionChange = (event, { value }) => {
     setState({ ...state, value });
   };
-  const handleChange = name => event => {
+  const toggleChange = name => event => {
     setState({ ...state, [name]: event.target.checked });
   };
 
@@ -174,7 +174,7 @@ const MetricList = () => {
           control={
             <Switch
               checked={state.checkedB}
-              onChange={handleChange('checkedB')}
+              onChange={toggleChange('checkedB')}
               value="checkedB"
               color="primary"
             />
