@@ -1,6 +1,6 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import { Grid, Segment } from "semantic-ui-react";
+import React from 'react';
+import { useSelector } from 'react-redux';
+import { Grid, Segment } from 'semantic-ui-react';
 
 export default props => {
   return props.display.value.length !== 0 ? <DisplayBox props={props} /> : null;
@@ -28,7 +28,7 @@ const DisplayBox = props => {
         {list
           ? list.map(a => {
               return (
-                <Grid.Column key={a.metric} style={{ margin: "20px" }}>
+                <Grid.Column key={a.metric} style={{ margin: '20px' }}>
                   <Segment>
                     {a.metric} : <h2>{a.value}</h2>
                   </Segment>

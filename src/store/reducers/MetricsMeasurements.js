@@ -4,7 +4,7 @@ const initialState = {
   getMultipleMeasurements: []
 };
 
-const metricsMeasurementsDataReceived = (state, action) => {
+const mutipleMeasurementsDataReceived = (state, action) => {
   const { getMultipleMeasurements } = action;
   return { getMultipleMeasurements };
 };
@@ -29,9 +29,19 @@ const newMeasurementsDataReceived = (state, action) => {
   return state;
 };
 
+const newMeasurementsDataFailure= (state, action) => {
+  return {...state, error: action.error};
+};
+
+const mutipleMeasurementsDataFailure= (state, action) => {
+  return {...state, error: action.error};
+}
+
 const handlers = {
-  [actions.METRICS_MEASUREMENTS_RECEIVED]: metricsMeasurementsDataReceived,
-  [actions.NEW_MEASUREMENTS_RECEIVED]: newMeasurementsDataReceived
+  [actions.METRICS_MEASUREMENTS_RECEIVED]: mutipleMeasurementsDataReceived,
+  [actions.NEW_MEASUREMENTS_RECEIVED]: newMeasurementsDataReceived,
+  [actions.NEW_MEASUREMENTS_API_CALL_FAIL]: newMeasurementsDataFailure,
+  [actions.MULTIPLE_MEASUREMENTS_API_CALL_FAIL]: mutipleMeasurementsDataFailure
 };
 
 export default (state = initialState, action) => {

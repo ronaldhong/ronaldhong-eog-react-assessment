@@ -1,5 +1,5 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React from 'react';
+import { useSelector } from 'react-redux';
 import {
   LineChart,
   Line,
@@ -9,11 +9,11 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer
-} from "recharts";
-var moment = require("moment");
+} from 'recharts';
+var moment = require('moment');
 
 function formatXAxis(tickItem) {
-  tickItem = moment(parseInt(tickItem)).format("LT");
+  tickItem = moment(parseInt(tickItem)).format('LT');
   return tickItem;
 }
 
@@ -47,7 +47,7 @@ const turnMeasurementDataToChartFormat = (
       return objectsByKeyValue;
     }, {});
 
-  const groupByTime = groupBy("at");
+  const groupByTime = groupBy('at');
 
   let v = groupByTime(list);
   let list_of_time = [];
@@ -56,7 +56,7 @@ const turnMeasurementDataToChartFormat = (
 
   for (let index = 0; index < list_of_time.length; index++) {
     let obj = {};
-    obj["name"] = list_of_time[index];
+    obj['name'] = list_of_time[index];
     for (let k = 0; k < v[list_of_time[index]].length; k++) {
       obj[v[list_of_time[index]][k].metric] = v[list_of_time[index]][k].value;
     }
@@ -101,12 +101,12 @@ const Chart = props => {
             tickFormatter={formatXAxis}
           />
           <YAxis
-            domain={["auto", "auto"]}
+            domain={['auto', 'auto']}
             scale="linear"
             padding={{ top: 10, bottom: 10 }}
           />
           <Tooltip
-            labelFormatter={t => moment(parseInt(t)).format("lll")}
+            labelFormatter={t => moment(parseInt(t)).format('lll')}
             useTranslate3d={false}
           />
           <Legend />

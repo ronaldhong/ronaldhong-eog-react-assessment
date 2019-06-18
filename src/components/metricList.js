@@ -1,14 +1,13 @@
-import React, { useEffect } from "react";
-import { useQuery, useSubscription } from "urql";
-import { useDispatch, useSelector } from "react-redux";
-import * as actions from "../store/actions";
-import Charts from "./Charts";
-import DisplayBox from "./DisplayBox";
-import { Dropdown, Dimmer, Loader } from "semantic-ui-react";
-import CircularProgress from "@material-ui/core/LinearProgress";
-import Container from "@material-ui/core/Container";
-import Switch from "@material-ui/core/Switch";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
+import React, { useEffect } from 'react';
+import { useQuery, useSubscription } from 'urql';
+import { useDispatch, useSelector } from 'react-redux';
+import * as actions from '../store/actions';
+import Charts from './Charts';
+import DisplayBox from './DisplayBox';
+import { Dropdown, Dimmer, Loader } from 'semantic-ui-react';
+import Container from '@material-ui/core/Container';
+import Switch from '@material-ui/core/Switch';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 const current_time = new Date().valueOf();
 const query_metric = `
@@ -74,7 +73,7 @@ const FetchMetricList = () => {
 
   useEffect(() => {
     if (error) {
-      return;
+      dispatch({ type: actions.METRIC_API_CALL_FAIL, error });
     }
     if (!data) {
       return;
@@ -96,7 +95,7 @@ const FetchMultipleMeasurements = () => {
   const { data, error, fetching } = result;
   useEffect(() => {
     if (error) {
-      return;
+      dispatch({ type: actions.MULTIPLE_MEASUREMENTS_API_CALL_FAIL, error });
     }
     if (!data) {
       return;
@@ -129,7 +128,7 @@ const FetchNewMeasurementData = state => {
   const { data, error } = result;
   useEffect(() => {
     if (error) {
-      return;
+      dispatch({ type: actions.NEW_MEASUREMENTS_API_CALL_FAIL, error });
     }
     if (!data) {
       return;
@@ -170,12 +169,12 @@ const MetricList = () => {
 
   return (
     <div>
-      <div style={{ textAlign: "right", margin: "20px" }}>
+      <div style={{ textAlign: 'right', margin: '20px' }}>
         <FormControlLabel
           control={
             <Switch
               checked={state.checkedB}
-              onChange={handleChange("checkedB")}
+              onChange={handleChange('checkedB')}
               value="checkedB"
               color="primary"
             />
@@ -190,11 +189,11 @@ const MetricList = () => {
           multiple
           selection
           options={options}
-          style={{ margin: "10px" }}
+          style={{ margin: '10px' }}
           onChange={handleSelectionChange}
         />
       </Container>
-      <div style={{ margin: "30px" }}>
+      <div style={{ margin: '30px' }}>
         <Charts command={state} />
       </div>
       <div>

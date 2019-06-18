@@ -7,11 +7,15 @@ const initialState = {
 const metricsDataReceived =(state,action) =>{
     const {getMetrics} = action;
     return {getMetrics}
+}
 
+const metricsDataFailed =(state, action)=>{
+    return {...state, error: action.error}
 }
 
 const handlers = {
-    [actions.METRICS_DATA_RECEIVED]: metricsDataReceived
+    [actions.METRICS_DATA_RECEIVED]: metricsDataReceived,
+    [actions.METRIC_API_CALL_FAIL]: metricsDataFailed
 }
 
 export default (state = initialState, action)=>{

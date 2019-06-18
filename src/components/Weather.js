@@ -1,11 +1,10 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import * as actions from "../store/actions";
-import {useQuery } from "urql";
-import { useGeolocation } from "react-use";
-import LinearProgress from "@material-ui/core/LinearProgress";
-import Chip from "./Chip";
-
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import * as actions from '../store/actions';
+import { useQuery } from 'urql';
+import { useGeolocation } from 'react-use';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import Chip from './Chip';
 
 const query = `
 query($latLong: WeatherQuery!) {
@@ -27,9 +26,7 @@ const getWeather = state => {
 };
 
 export default () => {
-  return (
-      <Weather />
-  );
+  return <Weather />;
 };
 
 const Weather = () => {
@@ -51,18 +48,15 @@ const Weather = () => {
     }
   });
   const { fetching, data, error } = result;
-  useEffect(
-    () => {
-      if (error) {
-        dispatch({ type: actions.API_ERROR, error: error.message });
-        return;
-      }
-      if (!data) return;
-      const { getWeatherForLocation } = data;
-      dispatch({ type: actions.WEATHER_DATA_RECEIVED, getWeatherForLocation });
-    },
-    [dispatch, data, error]
-  );
+  useEffect(() => {
+    if (error) {
+      dispatch({ type: actions.API_ERROR, error: error.message });
+      return;
+    }
+    if (!data) return;
+    const { getWeatherForLocation } = data;
+    dispatch({ type: actions.WEATHER_DATA_RECEIVED, getWeatherForLocation });
+  }, [dispatch, data, error]);
 
   if (fetching) return <LinearProgress />;
 
