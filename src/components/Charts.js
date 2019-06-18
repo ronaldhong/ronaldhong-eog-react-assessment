@@ -102,6 +102,7 @@ const Chart = props => {
             domain={['auto', 'auto']}
             scale="linear"
             padding={{ top: 10, bottom: 10 }}
+            tickCount={10}
           />
           <Tooltip
             labelFormatter={t => moment(parseInt(t)).format('lll')}
