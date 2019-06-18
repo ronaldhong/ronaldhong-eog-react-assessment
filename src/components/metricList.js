@@ -134,7 +134,7 @@ const FetchNewMeasurementData = state => {
       return;
     }
     const newMeasurementData = data;
-    if (state.checkedB === true)
+    if (state.switch === true)
       dispatch({
         type: actions.NEW_MEASUREMENTS_RECEIVED,
         newMeasurementData
@@ -144,7 +144,7 @@ const FetchNewMeasurementData = state => {
 
 const MetricList = () => {
   const [state, setState] = React.useState({
-    checkedB: true,
+    switch: true,
     value: []
   });
   FetchMetricList(); ///get the list of metrics for dropdown
@@ -173,9 +173,9 @@ const MetricList = () => {
         <FormControlLabel
           control={
             <Switch
-              checked={state.checkedB}
-              onChange={toggleChange('checkedB')}
-              value="checkedB"
+              checked={state.switch}
+              onChange={toggleChange('switch')}
+              value="switch"
               color="primary"
             />
           }

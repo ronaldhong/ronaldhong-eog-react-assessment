@@ -30,7 +30,7 @@ const DisplayBox = props => {
               return (
                 <Grid.Column key={a.metric} style={{ margin: '20px' }}>
                   <Segment>
-                    {a.metric} : <h2>{a.value}</h2>
+                    {a.metric} : <h2>{a.value}</h2><p>{a.unit}</p>
                   </Segment>
                 </Grid.Column>
               );
