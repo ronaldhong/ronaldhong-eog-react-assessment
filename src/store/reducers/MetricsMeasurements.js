@@ -10,9 +10,11 @@ const metricsMeasurementsDataReceived =(state, action) =>{
 
 }
 const newMeasurementsDataReceived = (state, action)=>{
-    for (let i = 0; i < Object.keys(state.getMultipleMeasurements.getMultipleMeasurements).length; i++) {
-        if (state.getMultipleMeasurements.getMultipleMeasurements[i].metric === action.newMeasurementData.newMeasurement.metric){
-            state.getMultipleMeasurements.getMultipleMeasurements[i].measurements.push(action.newMeasurementData.newMeasurement)
+    if (state.getMultipleMeasurements.hasOwnProperty('getMultipleMeasurements')){
+        for (let i = 0; i < Object.keys(state.getMultipleMeasurements.getMultipleMeasurements).length; i++) {
+            if (state.getMultipleMeasurements.getMultipleMeasurements[i].metric === action.newMeasurementData.newMeasurement.metric){
+                state.getMultipleMeasurements.getMultipleMeasurements[i].measurements.push(action.newMeasurementData.newMeasurement)
+            }
         }
     }
     return state
