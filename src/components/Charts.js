@@ -27,12 +27,10 @@ const getMultipleMeasurement = state => {
   return getMultipleMeasurements;
 };
 
-const getMetric = state => {
-  const getMetrics = state.metric.getMetrics;
-  return getMetrics;
-};
-
-const turnMeasurementDataToChartFormat=(data_list, getMultipleMeasurements)=>{
+const turnMeasurementDataToChartFormat = (
+  data_list,
+  getMultipleMeasurements
+) => {
   let list = [];
   let datas = getMultipleMeasurements.getMultipleMeasurements;
   for (let i = 0; i < datas.length; i++) {
@@ -45,9 +43,7 @@ const turnMeasurementDataToChartFormat=(data_list, getMultipleMeasurements)=>{
   const groupBy = key => array =>
     array.reduce((objectsByKeyValue, list) => {
       const value = list[key];
-      objectsByKeyValue[value] = (objectsByKeyValue[value] || []).concat(
-        list
-      );
+      objectsByKeyValue[value] = (objectsByKeyValue[value] || []).concat(list);
       return objectsByKeyValue;
     }, {});
 
@@ -69,19 +65,20 @@ const turnMeasurementDataToChartFormat=(data_list, getMultipleMeasurements)=>{
   return data_list;
 };
 
-
-const Chart = (props) => {
-  console.log(props)
+const Chart = props => {
   const getMultipleMeasurements = useSelector(getMultipleMeasurement);
   // const getMetrics = useSelector(getMetric);
   // const [dataSelected, setSelection] = useState([]);
   let data_list = [];
   if (getMultipleMeasurements.length !== 0) {
-    data_list = turnMeasurementDataToChartFormat(data_list, getMultipleMeasurements)
-  };
-  if (props.props.command.value.length ===0){
-    return (<div></div>)
-  };
+    data_list = turnMeasurementDataToChartFormat(
+      data_list,
+      getMultipleMeasurements
+    );
+  }
+  if (props.props.command.value.length === 0) {
+    return null;
+  }
 
   return (
     <div>
@@ -108,25 +105,28 @@ const Chart = (props) => {
             scale="linear"
             padding={{ top: 10, bottom: 10 }}
           />
-          <Tooltip labelFormatter={t => moment(parseInt(t)).format("lll")} useTranslate3d={false} />
+          <Tooltip
+            labelFormatter={t => moment(parseInt(t)).format("lll")}
+            useTranslate3d={false}
+          />
           <Legend />
 
           {props.props.command.value
-          ? props.props.command.value.map(a => {
-              return (
-                <Line
-                  type="monotone"
-                  key={`${a}`}
-                  dataKey={`${a}`}
-                  strokeOpacity="1"
-                  stroke= 'black'
-                  activeDot={{ r: 8 }}
-                  isAnimationActive={false}
-                  dot={false}
-                />
-              );
-            })
-          : null}
+            ? props.props.command.value.map(a => {
+                return (
+                  <Line
+                    type="monotone"
+                    key={`${a}`}
+                    dataKey={`${a}`}
+                    strokeOpacity="1"
+                    stroke="red"
+                    activeDot={{ r: 8 }}
+                    isAnimationActive={false}
+                    dot={false}
+                  />
+                );
+              })
+            : null}
         </LineChart>
       </ResponsiveContainer>
     </div>

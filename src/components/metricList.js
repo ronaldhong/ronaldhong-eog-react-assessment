@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useQuery, useSubscription } from "urql";
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../store/actions";
 import Charts from "./Charts";
-import { Dropdown } from "semantic-ui-react";
+import DisplayBox from "./DisplayBox";
+import { Dropdown, Dimmer, Loader } from "semantic-ui-react";
 import CircularProgress from "@material-ui/core/LinearProgress";
 import Container from "@material-ui/core/Container";
 import Switch from "@material-ui/core/Switch";
@@ -18,17 +19,17 @@ const query_metric = `
 const query_multiple_measurements = `
     query($input: [MeasurementQuery] = [
       {metricName: "tubingPressure", after: ${current_time -
-        180000}, before: ${current_time}},
+        1800000}, before: ${current_time}},
       {metricName: "casingPressure", after: ${current_time -
-        180000}, before: ${current_time}},
+        1800000}, before: ${current_time}},
       {metricName: "oilTemp", after: ${current_time -
-        180000}, before: ${current_time}},
+        1800000}, before: ${current_time}},
       {metricName: "flareTemp", after: ${current_time -
-        180000}, before: ${current_time}},
+        1800000}, before: ${current_time}},
       {metricName: "waterTemp", after: ${current_time -
-        180000}, before: ${current_time}},
+        1800000}, before: ${current_time}},
       {metricName: "injValveOpen", after: ${current_time -
-        180000}, before: ${current_time}}
+        1800000}, before: ${current_time}}
     ]
     ){
       getMultipleMeasurements(input: $input) {
@@ -41,6 +42,7 @@ const query_multiple_measurements = `
         }
       }
     }`;
+
 const metric_Subscription_Query = `
   subscription {
     newMeasurement{
@@ -56,12 +58,6 @@ const getMetric = state => {
   const getMetrics = state.metric.getMetrics;
   return getMetrics;
 };
-
-// const getNewMeasurementData = state => {
-//   const getNewMeasurementDatas =
-//     state.metricsMeasurements.getMultipleMeasurements;
-//   return getNewMeasurementDatas;
-// };
 
 export default () => {
   return <MetricList />;
@@ -124,8 +120,7 @@ const turnMetricListToDropDownFormat = (options, getMetrics) => {
   return options;
 };
 
-const FetchNewMeasurementData = (state) => {
-  ///FetchNewMeasurementData has real time data, dispatch an action and will update the total measurement data
+const FetchNewMeasurementData = state => {
   const dispatch = useDispatch();
   const [result] = useSubscription({
     query: metric_Subscription_Query,
@@ -158,7 +153,12 @@ const MetricList = () => {
   FetchNewMeasurementData(state);
   const getMetrics = useSelector(getMetric);
   let options = [];
-  if (getMetrics.length === 0) return <CircularProgress />;
+  if (getMetrics.length === 0)
+    return (
+      <Dimmer active>
+        <Loader size="massive">Loading</Loader>
+      </Dimmer>
+    );
   options = turnMetricListToDropDownFormat(options, getMetrics);
 
   const handleSelectionChange = (event, { value }) => {
@@ -167,11 +167,10 @@ const MetricList = () => {
   const handleChange = name => event => {
     setState({ ...state, [name]: event.target.checked });
   };
-  console.log(state);
 
   return (
     <div>
-      <div style={{ textAlign: "right" }}>
+      <div style={{ textAlign: "right", margin: "20px" }}>
         <FormControlLabel
           control={
             <Switch
@@ -191,12 +190,15 @@ const MetricList = () => {
           multiple
           selection
           options={options}
-          style={{ margin: "30px" }}
+          style={{ margin: "10px" }}
           onChange={handleSelectionChange}
         />
       </Container>
       <div style={{ margin: "30px" }}>
         <Charts command={state} />
+      </div>
+      <div>
+        <DisplayBox display={state} />
       </div>
     </div>
   );
