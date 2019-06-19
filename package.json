@@ -2,10 +2,12 @@
   "name": "eog-react-visualization-base",
   "version": "2.0.0",
   "private": true,
+  "homepage": "https://ronaldhong.github.io/eog-react-data-visualization-app",
   "dependencies": {
     "@material-ui/core": "^4.0.2",
     "@material-ui/icons": "^4.0.1",
     "apollo-boost": "^0.4.2",
+    "gh-pages": "^2.0.1",
     "graphql": "^14.3.1",
     "graphql-tag": "^2.10.1",
     "isomorphic-fetch": "^2.2.1",
