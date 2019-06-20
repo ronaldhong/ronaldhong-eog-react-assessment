@@ -2,32 +2,37 @@
 
 This assessment was bespoke handcrafted for ronaldhong.
 
-Read more about this assessment [here](https://react.eogresources.com)
+To Install: Git Clone https://github.com/ronaldhong/ronaldhong-eog-react-assessment.git
+Go to the directory in your terminal
+Run npm install 
+Run yarn start
+go to "http://localhost:3000/" enjoy =)
 
-Metric List and Values <Checked>
+1. Metric List and Values <Checked>
 
 
-1. Charting behaves like you would expect  :D
+2. Charting behaves like you would expect  :D
 
-2. Good Git/GitHub Practices   :D
+3. Good Git/GitHub Practices   :D
 
-3. You use and run our getting started code  :D
+4. You use and run our getting started code  :D
 
-4. Coding Standards   :D
+5. Coding Standards   :D
 
-Bonus Points
-5. Use React Hooks   :D
+6. Use React Hooks   :D
 
-6. Runs free of console warnings  :D
+7. Runs free of console warnings  :D
 
-7. Handling Errors  :|
+8. Handling Errors  :|
 
-8. Use Redux   :D
+9. Use Redux   :D
 
-9. Use Prettier   :D
+10. Use Prettier   :D
 
-10. GraphQL Subscriptions  :D
+11. GraphQL Subscriptions  :D
 
-11. TypeScript  D:
+12. TypeScript  D:
 
-12. Creativity   :|
+13. Creativity   :|
+
+![image](https://user-images.githubusercontent.com/24851233/59866657-bfbd5080-9351-11e9-8f8a-1edb4cae23f1.png)

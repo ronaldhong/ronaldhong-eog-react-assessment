@@ -71,6 +71,7 @@ const FetchMetricList = () => {
   });
   const { fetching, data, error } = result;
 
+  // similar to component did mount, the useEffect gets calle 
   useEffect(() => {
     if (error) {
       dispatch({ type: actions.METRIC_API_CALL_FAIL, error });
