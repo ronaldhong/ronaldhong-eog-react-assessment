@@ -16,31 +16,31 @@ const query_metric = `
     }`;
 
 const query_multiple_measurements = `
-    query($input: [MeasurementQuery] = [
-      {metricName: "tubingPressure", after: ${current_time -
-        1800000}, before: ${current_time}},
-      {metricName: "casingPressure", after: ${current_time -
-        1800000}, before: ${current_time}},
-      {metricName: "oilTemp", after: ${current_time -
-        1800000}, before: ${current_time}},
-      {metricName: "flareTemp", after: ${current_time -
-        1800000}, before: ${current_time}},
-      {metricName: "waterTemp", after: ${current_time -
-        1800000}, before: ${current_time}},
-      {metricName: "injValveOpen", after: ${current_time -
-        1800000}, before: ${current_time}}
-    ]
-    ){
-      getMultipleMeasurements(input: $input) {
-        metric
-        measurements {
-         at
-         value
-         metric
-         unit
-        }
-      }
-    }`;
+query($input: [MeasurementQuery] = [
+  {metricName: "tubingPressure", after: ${current_time -
+    1800000}, before: ${current_time}},
+  {metricName: "casingPressure", after: ${current_time -
+    1800000}, before: ${current_time}},
+  {metricName: "oilTemp", after: ${current_time -
+    1800000}, before: ${current_time}},
+  {metricName: "flareTemp", after: ${current_time -
+    1800000}, before: ${current_time}},
+  {metricName: "waterTemp", after: ${current_time -
+    1800000}, before: ${current_time}},
+  {metricName: "injValveOpen", after: ${current_time -
+    1800000}, before: ${current_time}}
+]
+){
+  getMultipleMeasurements(input: $input) {
+    metric
+    measurements {
+     at
+     value
+     metric
+     unit
+    }
+  }
+}`;
 
 const metric_Subscription_Query = `
   subscription {
