@@ -8,6 +8,8 @@ Run npm install
 Run yarn start
 go to "http://localhost:3000/" enjoy =)
 
+Tool used: React v16.8, Recharts, React Hook, react-redux, subscriptions-transport-ws, urql, material UI, semantic UI,
+
 1. Metric List and Values <Checked>
 
 
