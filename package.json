@@ -47,5 +47,16 @@
   "devDependencies": {
     "prettier": "1.18.2",
     "redux-devtools-extension": "^2.13.5"
+  },
+  "description": "This assessment was bespoke handcrafted for ronaldhong.",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ronaldhong/ronaldhong-eog-react-assessment.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ronaldhong/ronaldhong-eog-react-assessment/issues"
   }
 }
