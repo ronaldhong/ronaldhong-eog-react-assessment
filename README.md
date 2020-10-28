@@ -4,7 +4,7 @@ This assessment was bespoke handcrafted for ronaldhong.
 
 To Install: Git Clone https://github.com/ronaldhong/ronaldhong-eog-react-assessment.git<br/>
 Go to the directory in your terminal<br/>
-Run npm install <br/>
+Run yarn install <br/>
 Run yarn start<br/>
 go to "http://localhost:3000/" enjoy =)
 <br/>
